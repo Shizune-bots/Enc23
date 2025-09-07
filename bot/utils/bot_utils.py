@@ -435,6 +435,7 @@ def is_video_file(filename: str):
         ".mpg",
         ".mpg2",
         ".xvid",
+        ".ts",
     )
     if filename.endswith((video_file_extensions)):
         return True
