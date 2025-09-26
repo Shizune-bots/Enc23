@@ -116,7 +116,9 @@ async def on_termination():
 
 async def on_startup():
     try: 
-        asyncio.create_task(start_rpc())
+        # Aria2 startup removed by not calling start_rpc() or onstart()
+        # asyncio.create_task(start_rpc())
+
         asyncio.create_task(autostat())
         loop = asyncio.get_running_loop()
         for signame in {"SIGINT", "SIGTERM", "SIGABRT"}:
@@ -124,11 +126,13 @@ async def on_startup():
                 getattr(signal, signame),
                 lambda: asyncio.create_task(on_termination()),
             )
+
         if len(sys.argv) == 3:
             await onrestart()
-        else:
-            await asyncio.sleep(1)
-            await onstart()
+        # else:
+        #     await asyncio.sleep(1)
+        #     await onstart()  # removed to skip Aria2 startup
+
         await entime.start()
         ejob.reset(force=True)
         await asyncio.sleep(30)
